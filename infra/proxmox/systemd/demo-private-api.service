@@ -1,0 +1,21 @@
+[Unit]
+Description=Demo Agent Private API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=demo-private-api
+Group=demo-private-api
+WorkingDirectory=/opt/demo-private-api
+EnvironmentFile=/etc/demo-private-api/runtime.env
+ExecStart=/opt/demo-private-api/.venv/bin/python -m uvicorn app:app --host 127.0.0.1 --port 8000
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

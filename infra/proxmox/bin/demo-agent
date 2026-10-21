@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+set +x
+
+if [[ "$(id -un)" != "demo-agent" ]]; then
+  printf '%s\n' "demo-agent must run as the demo-agent user" >&2
+  exit 1
+fi
+
+set -a
+# shellcheck source=/dev/null
+source /etc/demo-agent/access.env
+set +a
+cd /opt/demo-agent
+exec /opt/demo-agent/.venv/bin/python -m demo_agent.cli "$@"

@@ -1,0 +1,22 @@
+[Unit]
+Description=Cloudflare Tunnel for live demo agent guide
+Wants=network-online.target
+After=network-online.target warp-svc.service demo-agent-web.service
+
+[Service]
+Type=simple
+User=demo-cloudflared
+Group=demo-cloudflared
+EnvironmentFile=/etc/cloudflared/live-guide.env
+ExecStart=/usr/bin/cloudflared tunnel --no-autoupdate --loglevel info run
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+RestrictAddressFamilies=AF_INET AF_INET6
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

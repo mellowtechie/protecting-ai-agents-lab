@@ -1,0 +1,23 @@
+[Unit]
+Description=Access-protected live demo agent guide
+Wants=network-online.target
+After=network-online.target warp-svc.service
+
+[Service]
+Type=simple
+User=demo-agent
+Group=demo-agent
+WorkingDirectory=/opt/demo-agent
+EnvironmentFile=/etc/demo-agent/access.env
+ExecStart=/opt/demo-agent/.venv/bin/python -m demo_agent.web
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+RestrictAddressFamilies=AF_INET AF_INET6
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

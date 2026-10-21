@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    // The plugin's Node/Miniflare declarations conflict with generated Worker globals.
+    "skipLibCheck": true,
+    "strict": true,
+    "types": ["@cloudflare/vitest-plugin/types"]
+  },
+  "include": ["src", "test", "vitest.config.ts", "worker-configuration.d.ts"]
+}

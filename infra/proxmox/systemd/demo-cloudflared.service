@@ -1,0 +1,38 @@
+[Unit]
+Description=Demo Agent Cloudflare Tunnel
+After=network-online.target demo-private-api.service
+Wants=network-online.target
+Requires=demo-private-api.service
+
+[Service]
+Type=simple
+User=demo-cloudflared
+Group=demo-cloudflared
+EnvironmentFile=/etc/cloudflared/tunnel.env
+ExecStartPre=/usr/bin/curl --fail --silent --show-error --connect-timeout 2 --max-time 5 --output /dev/null http://127.0.0.1:8000/readyz
+ExecStart=/usr/bin/cloudflared tunnel --no-autoupdate --loglevel info --metrics 127.0.0.1:2000 run
+Restart=on-failure
+RestartSec=5
+UMask=0077
+CapabilityBoundingSet=
+AmbientCapabilities=
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target

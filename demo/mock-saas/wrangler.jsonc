@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "demo-agent-mock-saas",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-21",
+  "ratelimits": [
+    {
+      "name": "CONTROLLED_ENDPOINT_RATE_LIMITER",
+      "namespace_id": "74291364",
+      "simple": { "limit": 100, "period": 60 }
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "redact_query_string": true,
+    "logs": { "head_sampling_rate": 1, "invocation_logs": false },
+    "traces": { "enabled": true, "head_sampling_rate": 1 }
+  }
+}

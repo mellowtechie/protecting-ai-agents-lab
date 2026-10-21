@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Protecting AI agents | Lab guide</title>
+  <link rel="icon" href="/favicon.png">
+  <style>
+    :root { font-family: system-ui, sans-serif; color: #f3f6fa; background: #101722; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.55; }
+    main { max-width: 1000px; margin: auto; padding: 32px 20px 80px; }
+    h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; }
+    h2 { margin-top: 42px; }
+    p, li { color: #c8d4e0; }
+    a { color: #ffbd82; }
+    button { padding: 9px 14px; border: 0; border-radius: 7px; background: #ffb471; color: #201810; font: inherit; font-weight: 700; cursor: pointer; }
+    button:disabled { opacity: .55; cursor: wait; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; }
+    article { padding: 18px; border: 1px solid #3b4e60; border-radius: 12px; background: #1b2938; }
+    article h3 { margin: 0 0 8px; }
+    .links { display: flex; gap: 14px; flex-wrap: wrap; margin: 16px 0; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; border-radius: 8px; color: #d5f3e6; background: #0d1820; }
+    .status { color: #ffe0b8; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Protecting AI agents with Cloudflare One</h1>
+    <p>This lab sends deterministic synthetic requests. Access checks a service token and client certificate before an agent reads a private record. Gateway and DLP inspect its outbound POST to a controlled Worker.</p>
+    <p id="hosts">Loading lab configuration...</p>
+    <div class="links"><a id="logs" target="_blank" rel="noopener noreferrer">Open demo request logs</a><a href="/llms.txt">Lab index</a></div>
+    <h2>Run the six fixed modes</h2>
+    <p>Run in order. The identity step is local. Each live result includes its UTC timestamp. Correlate each HTTP result with Access or Gateway logs in the same time window; a 302 alone does not prove the Worker rejected a request.</p>
+    <div class="steps" id="steps"></div>
+    <h2>Evidence to check</h2>
+    <ol>
+      <li>For the three private API requests, compare Access deny, deny, allow decisions with the CLI's 403, 403, 200 responses.</li>
+      <li>For the safe send, find a Gateway allow and an accepted controlled-endpoint event.</li>
+      <li>For the protected send, find a Gateway DLP block and no accepted controlled-endpoint event in a bounded window.</li>
+    </ol>
+    <p>The page requires an Access-protected deployment. The operator should use the repository README for setup and security requirements.</p>
+  </main>
+  <script>
+    const modes = [
+      ['identity', 'Inspect certificate', 'Read local workload certificate metadata; no HTTP request.'],
+      ['no-auth', 'No credentials', 'Request the private record without token or certificate.'],
+      ['token-only', 'Token only', 'Request with the service token but no certificate.'],
+      ['authorized', 'Authorized read', 'Request with both required credentials.'],
+      ['send-safe', 'Safe send', 'Send the safe summary to the controlled endpoint.'],
+      ['send-raw', 'Protected send', 'Attempt to send the synthetic protected marker.'],
+    ];
+    const steps = document.getElementById('steps');
+    for (const [mode, title, description] of modes) {
+      const article = document.createElement('article');
+      const heading = document.createElement('h3'); heading.textContent = title;
+      const detail = document.createElement('p'); detail.textContent = description;
+      const button = document.createElement('button'); button.textContent = `Run ${mode}`;
+      const output = document.createElement('pre'); output.setAttribute('aria-live', 'polite');
+      button.addEventListener('click', async () => {
+        button.disabled = true; output.textContent = 'Running...';
+        try {
+          const response = await fetch('/run', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode }) });
+          if (!response.ok) throw new Error('Run failed. Check the Access session and lab services.');
+          output.textContent = JSON.stringify(await response.json(), null, 2);
+        } catch (error) { output.textContent = error.message; }
+        finally { button.disabled = false; }
+      });
+      article.append(heading, detail, button, output); steps.append(article);
+    }
+    fetch('/config.json', { credentials: 'same-origin' }).then((response) => {
+      if (!response.ok) throw new Error('configuration unavailable');
+      return response.json();
+    }).then((config) => {
+      document.getElementById('hosts').textContent = `Private API: ${config.api_host} | Controlled endpoint: ${config.saas_host}`;
+      const query = `clientRequestHTTPHost = "${config.saas_host}" OR clientRequestHTTPHost = "${config.api_host}"`;
+      document.getElementById('logs').href = `https://dash.cloudflare.com/${config.account_id}/observability/logs?q=${encodeURIComponent(query)}`;
+    }).catch(() => { document.getElementById('hosts').textContent = 'Lab configuration unavailable.'; document.getElementById('logs').hidden = true; });
+  </script>
+</body>
+</html>

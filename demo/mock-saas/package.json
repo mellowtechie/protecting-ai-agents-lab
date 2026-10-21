@@ -1,0 +1,20 @@
+{
+  "name": "demo-agent-mock-saas",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "test": "npm run check",
+    "check": "wrangler types --check && tsc --noEmit && vitest run",
+    "deploy:dry": "wrangler deploy --dry-run",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.4.6",
+    "typescript": "7.0.2",
+    "vitest": "4.1.11",
+    "wrangler": "^4.151.3"
+  }
+}

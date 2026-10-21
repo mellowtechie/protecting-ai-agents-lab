@@ -1,0 +1,10 @@
+# Protecting AI agents lab
+
+The guide contains six fixed synthetic demo modes: identity, no-auth, token-only, authorized, send-safe, and send-raw.
+
+- `/` serves the lab guide.
+- `/config.json` exposes only the configured account ID and demo hostnames for dashboard links.
+- `/run` accepts one fixed mode and returns a sanitized, timestamped result.
+- `/health` reports local web-process liveness.
+
+Deploy the guide only behind Cloudflare Access. See the repository README for setup and evidence requirements.
