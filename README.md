@@ -212,7 +212,7 @@ Rerun the local component tests at the top of this README after changing the lab
 
 Review `terraform -chdir=infra/cloudflare plan -destroy` before removing the lab. Delete the Worker custom domain and secret through Wrangler, then apply a reviewed Terraform destroy plan. Remove guest files and certificates through your normal VM retirement process. Preserve evidence and any needed Terraform state before cleanup.
 
-This is a deterministic demonstration, not an LLM or prompt-injection workload. Access machine-authentication decisions may need Access analytics beyond the dashboard's standard authentication log view. Gateway DLP policy and device behavior depend on the account's entitlements and pre-existing policy order. The installers and Terraform are reproducible, but this repository has not been exercised against a fresh third-party Cloudflare account; complete the preflight and live verification before using its results in a presentation.
+This is a deterministic demonstration, not an LLM or prompt-injection workload. Access machine-authentication decisions may need Access analytics beyond the dashboard's standard authentication log view. Gateway DLP policy and device behavior depend on the account's entitlements and pre-existing policy order. The `send-raw` mode accepts a 403 or a 302 to `blocked.teams.cloudflare.com` only; if your account uses a custom Gateway block page host, the CLI reports a failure even when the Gateway log shows the DLP block, so rely on the Gateway log for that mode. The installers and Terraform are reproducible, but this repository has not been exercised against a fresh third-party Cloudflare account; complete the preflight and live verification before using its results in a presentation.
 
 ## License
 
