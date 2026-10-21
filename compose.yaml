@@ -1,0 +1,20 @@
+services:
+  guide:
+    build:
+      context: .
+      dockerfile: Dockerfile.agent
+      target: runtime
+    network_mode: host
+    user: "${DEMO_AGENT_UID:?Set DEMO_AGENT_UID to the demo-agent host UID}:${DEMO_AGENT_GID:?Set DEMO_AGENT_GID to the demo-agent host GID}"
+    env_file:
+      - /etc/demo-agent/access.env
+    volumes:
+      - /etc/demo-agent/pki:/etc/demo-agent/pki:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped

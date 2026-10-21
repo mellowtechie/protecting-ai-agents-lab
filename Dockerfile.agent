@@ -1,0 +1,20 @@
+FROM python:3.12-slim AS base
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/opt/demo-agent
+WORKDIR /opt/demo-agent
+
+COPY demo/agent/requirements.txt ./requirements.txt
+RUN python -m pip install --no-cache-dir --requirement requirements.txt
+COPY demo/agent/demo_agent ./demo_agent
+COPY docs/demo-command-guide.html ./site/index.html
+COPY docs/favicon.png llms.txt ./site/
+
+FROM base AS test
+COPY demo/agent/tests ./tests
+CMD ["python", "-m", "pytest", "-q", "tests"]
+
+FROM base AS runtime
+USER 65532:65532
+CMD ["python", "-m", "demo_agent.web"]

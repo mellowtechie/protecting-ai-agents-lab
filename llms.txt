@@ -7,4 +7,6 @@ The guide contains six fixed synthetic demo modes: identity, no-auth, token-only
 - `/run` accepts one fixed mode and returns a sanitized, timestamped result.
 - `/health` reports local web-process liveness.
 
-Deploy the guide only behind Cloudflare Access. See the repository README for setup and evidence requirements.
+The repository README gives human setup steps, CLI tests, and an optional Docker image for the agent and guide. AGENTS.md gives AI assistant instructions. The Docker image still requires a host running One Client and Cloudflare Tunnel.
+
+Deploy the guide only behind Cloudflare Access. The six-mode CLI run is not sufficient proof of a DLP block; correlate Gateway and controlled Worker evidence in a bounded UTC window.

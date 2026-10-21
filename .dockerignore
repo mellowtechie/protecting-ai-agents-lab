@@ -1,0 +1,12 @@
+*
+!demo/
+!demo/agent/
+!demo/agent/demo_agent/
+!demo/agent/demo_agent/*.py
+!demo/agent/requirements.txt
+!demo/agent/tests/
+!demo/agent/tests/*.py
+!docs/
+!docs/demo-command-guide.html
+!docs/favicon.png
+!llms.txt

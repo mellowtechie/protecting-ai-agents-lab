@@ -29,7 +29,7 @@
     <h1>Protecting AI agents with Cloudflare One</h1>
     <p>This lab sends deterministic synthetic requests. Access checks a service token and client certificate before an agent reads a private record. Gateway and DLP inspect its outbound POST to a controlled Worker.</p>
     <p id="hosts">Loading lab configuration...</p>
-    <div class="links"><a id="logs" target="_blank" rel="noopener noreferrer">Open demo request logs</a><a href="/llms.txt">Lab index</a></div>
+    <div class="links"><a id="logs" target="_blank" rel="noopener noreferrer">Open demo request logs</a><a href="https://github.com/mellowtechie/protecting-ai-agents-lab" target="_blank" rel="noopener noreferrer">Setup and CLI tests</a><a href="/llms.txt">Lab index</a></div>
     <h2>Run the six fixed modes</h2>
     <p>Run in order. The identity step is local. Each live result includes its UTC timestamp. Correlate each HTTP result with Access or Gateway logs in the same time window; a 302 alone does not prove the Worker rejected a request.</p>
     <div class="steps" id="steps"></div>
@@ -39,7 +39,7 @@
       <li>For the safe send, find a Gateway allow and an accepted controlled-endpoint event.</li>
       <li>For the protected send, find a Gateway DLP block and no accepted controlled-endpoint event in a bounded window.</li>
     </ol>
-    <p>The page requires an Access-protected deployment. The operator should use the repository README for setup and security requirements.</p>
+    <p>The page requires an Access-protected deployment. Use the <a href="https://github.com/mellowtechie/protecting-ai-agents-lab" target="_blank" rel="noopener noreferrer">repository README</a> for manual setup, Docker guide options, CLI tests, and security requirements.</p>
   </main>
   <script>
     const modes = [
