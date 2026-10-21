@@ -10,6 +10,9 @@ services:
       - /etc/demo-agent/access.env
     volumes:
       - /etc/demo-agent/pki:/etc/demo-agent/pki:ro
+      # The host bundle includes the Gateway root installed by update-ca-certificates;
+      # without it the container rejects TLS-inspected sends to the controlled endpoint.
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
     read_only: true
     tmpfs:
       - /tmp
