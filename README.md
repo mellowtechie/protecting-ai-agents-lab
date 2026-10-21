@@ -43,6 +43,8 @@ docker build --target test -t protecting-ai-agents-test -f Dockerfile.agent .
 docker run --rm protecting-ai-agents-test
 ```
 
+The repository's [Verify lab workflow](.github/workflows/verify.yml) runs the agent, API, and Worker tests, builds and smoke tests the guide image, and validates Terraform with a temporary CI certificate. It does not deploy Cloudflare resources or replace the live checks in section 6.
+
 ## 1. Preflight
 
 Choose three unused subdomains in one zone: private API, controlled endpoint, and guide. Choose a unique `resource_prefix` and two unused positive Gateway policy precedences. Confirm that existing Gateway rules will not shadow the lab rules, and that TLS inspection is enabled for the controlled endpoint. The private API gets an exact-host Do Not Inspect rule so its client certificate reaches Access. Keep this demo separate from production application hostnames and policies.

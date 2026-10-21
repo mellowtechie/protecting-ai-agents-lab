@@ -51,3 +51,21 @@ jobs:
         run: |
           npm --prefix demo/mock-saas ci
           npm --prefix demo/mock-saas run check
+
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.8.5'
+      - name: Validate Cloudflare configuration without deploying
+        run: |
+          terraform fmt -check infra/cloudflare/*.tf
+          mkdir -p infra/pki/.secrets
+          openssl req -x509 -newkey rsa:2048 -nodes -days 1 \
+            -subj '/CN=CI fixture' \
+            -keyout infra/pki/.secrets/root-ca.key \
+            -out infra/pki/.secrets/root-ca.crt >/dev/null 2>&1
+          terraform -chdir=infra/cloudflare init -backend=false -input=false
+          terraform -chdir=infra/cloudflare validate
