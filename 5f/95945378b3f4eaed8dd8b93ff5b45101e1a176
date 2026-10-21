@@ -1,0 +1,43 @@
+demo/agent/requirements.txt
+  s_b786af5c22e300::t_4bc1d5686fbf0d 1-3
+demo/mock-saas/src/index.ts
+  s_b786af5c22e300::t_77ef170cb82c92 1-133
+demo/mock-saas/tsconfig.json
+  s_b786af5c22e300::t_c11b96a9e95f17 1-13
+demo/mock-saas/vitest.config.ts
+  s_b786af5c22e300::t_c1385e6f032d1e 1-13
+demo/private-api/app.py
+  s_b786af5c22e300::t_eccd5d125a866a 1-154
+demo/private-api/requirements.txt
+  s_b786af5c22e300::t_b2c62ec41c6322 1-5
+demo/private-api/tests/test_app.py
+  s_b786af5c22e300::t_044cf08b2e68d7 1-557
+infra/cloudflare/.terraform.lock.hcl
+  s_b786af5c22e300::t_b60b19673d0e15 1-40
+infra/cloudflare/tunnel.tf
+  s_b786af5c22e300::t_4aabd8f18fdf09 1-37
+infra/cloudflare/versions.tf
+  s_b786af5c22e300::t_207efb32deaf64 1-15
+infra/proxmox/bin/demo-agent
+  s_b786af5c22e300::t_6a25ec4729205e 1-15
+infra/proxmox/systemd/demo-cloudflared.service
+  s_b786af5c22e300::t_da71bd680de709 1-38
+infra/proxmox/systemd/demo-private-api.service
+  s_b786af5c22e300::t_8fac801df06210 1-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "5f95945378b3f4eaed8dd8b93ff5b45101e1a176",
+  "prompts": {},
+  "sessions": {
+    "s_b786af5c22e300": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f96c57e8bffeRk4YkGPUzRQKke",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Todd Murray <17212681+mellowtechie@users.noreply.github.com>"
+    }
+  }
+}
